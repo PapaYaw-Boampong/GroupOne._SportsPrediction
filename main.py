@@ -2,7 +2,21 @@ import streamlit as st
 import pickle
 import pandas as pd
 import sklearn
+from sklearn.utils import resample
+import numpy as np
 
+# Assume x_single is your single row of data to predict on
+# x_single = ...
+
+n_bootstrap = 1000
+bootstrap_predictions = []
+
+for _ in range(n_bootstrap):
+    X_resampled, y_resampled = resample(X_train, y_train)
+    model = GradientBoostingRegressor()
+    model.fit(X_resampled, y_resampled)
+    y_pred = model.predict([x_single])
+    bootstrap_predictions.append(y_pred)
 
 def run():
     st.set_page_config(
