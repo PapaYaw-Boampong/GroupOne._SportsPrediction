@@ -11,10 +11,6 @@ def run():
     )
     model = pickle.load(open('fifa_ml.pkl', "rb"))["model"]
     scaler = pickle.load(open('fifa_ml.pkl', "rb"))["scaler"]
-    # # Load the trained model from a file
-    # with open('fifa_ml.pkl', 'rb') as file:
-    #     model = pickle.load(file)['model']
-    #     scaler = pickle.load(file)['scaler']
 
     st.write("# Group One Fifa Player Overall Rating Prediction")
     st.write("\n Enter data (1-100)")
