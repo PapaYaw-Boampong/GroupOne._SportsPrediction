@@ -79,7 +79,7 @@ def run():
 
     predict_button = st.button("Predict Player Rating")
     if predict_button:
-        n_bootstrap = 1000
+        n_bootstrap = 100
         predictions = []
         
         for i in range(n_bootstrap):
