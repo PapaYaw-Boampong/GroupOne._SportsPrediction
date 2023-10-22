@@ -79,4 +79,5 @@ def run():
     # Button to make predictions
 
 
-run()
+if __name__ == "__main__":
+    run()
