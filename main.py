@@ -11,11 +11,10 @@ def run():
     )
     model = pickle.load(open('fifa_ml.pkl', "rb"))["model"]
     scaler = pickle.load(open('fifa_ml.pkl', "rb"))["scaler"]
-    # # Load the trained model from a file
-    # with open('fifa_ml.pkl', 'rb') as file:
-    #     model = pickle.load(file)['model']
-    #     scaler = pickle.load(file)['scaler']
-
+    xtrain = pickle.load(open('train_data.pkl', "rb"))
+    ytrain = pickle.load(open('test_data.pkl', "rb"))
+    
+  
     st.write("# Group One Fifa Player Overall Rating Prediction")
     st.write("\n Enter data (1-100)")
 
@@ -70,12 +69,32 @@ def run():
 
     # Function to pass user input to the model
     def predict_rating(data_input):
+        Xresampled, Yresampled = resample(xtrain, ytrain)
+        model.fit(Xresampled, Yresampled)
         return model.predict(data_input)
 
     predict_button = st.button("Predict Player Rating")
     if predict_button:
-        prediction = predict_rating(data)
+        n_bootstrap = 1000
+        predictions = []
+        
+        for i in range(n_bootstrap):
+          y_pred  = predict_rating(data)
+          predictions.append(y_pred)
+        
+        bootstrap_predictions = np.array(predictions)
+        # Calculate mean and standard deviation of predictions
+        mean_prediction = bootstrap_predictions.mean()
+        std_prediction = bootstrap_predictions.std()
+
+        z_score = 1.96
+        lower_bound = mean_prediction - z_score * std_prediction
+        upper_bound = mean_prediction + z_score * std_prediction
+
+
+        prediction = mean_prediction
         st.write(f"Predicted Overall Player Rating: {prediction[0]:.2f}")
+        st.write(f"95% Prediction Interval: [{lower_bound:.2f}, {upper_bound:.2f}]")
     # Button to make predictions
 
 
