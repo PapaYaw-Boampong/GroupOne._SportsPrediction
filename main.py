@@ -25,6 +25,7 @@ def run():
     )
     model = pickle.load(open('fifa_ml.pkl', "rb"))["model"]
     scaler = pickle.load(open('fifa_ml.pkl', "rb"))["scaler"]
+    
     xtrain = pickle.load(open('train_data.pkl', "rb"))
     ytrain = pickle.load(open('test_data.pkl', "rb"))
     
@@ -82,8 +83,8 @@ def run():
     data = user_input()
 
     # Function to pass user input to the model
-    def predict_rating(data_input):
-        Xresampled, Yresampled = resample(xtrain, ytrain)
+    def predict_rating(data_input,x,y):
+        Xresampled, Yresampled = resample(x, y)
         model.fit(Xresampled, Yresampled)
         return model.predict(data_input)
 
@@ -93,7 +94,7 @@ def run():
         predictions = []
         
         for i in range(n_bootstrap):
-          y_pred  = predict_rating(data)
+          y_pred  = predict_rating(data,xtrain,ytrain)
           predictions.append(y_pred)
         
         bootstrap_predictions = np.array(predictions)
