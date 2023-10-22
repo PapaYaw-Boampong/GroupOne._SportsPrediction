@@ -64,18 +64,9 @@ for col in cols_to_modify:
 for col in cols_to_modify:
     data_2022[ col] = data_2022[col].apply( extract_first_number)
 
-# # Group by the last letter of the position columns using mean
-# mean_by_position = data_2021[cols_to_modify].groupby(data_2021[cols_to_modify].columns.str[-1], axis=1).mean()
-
-# data_2021 = data_2021.drop(columns=cols_to_modify)
-# data_2021 = pd.concat([data_2021, mean_by_position], axis=1)
 
 
-# mean_by_position2 = data_2022[cols_to_modify].groupby(data_2022[cols_to_modify].columns.str[-1], axis=1).mean()
-
-# data_2022 = data_2022.drop(columns=cols_to_modify)
-# data_2022 = pd.concat([data_2022, mean_by_position], axis=1)
-
+# Generating general position ratings
 # Defining position groups
 striker_positions = ['ls', 'st', 'rs', 'lw', 'lf', 'cf', 'rf', 'rw']
 midfielder_positions = ['lam', 'cam', 'ram', 'lm', 'lcm', 'cm', 'rcm', 'rm', 'lwb', 'ldm', 'cdm', 'rdm', 'rwb']
@@ -88,8 +79,6 @@ data_2021['Midfielder_Avg'] = data_2021[midfielder_positions].mean(axis=1)
 data_2021['Defender_Avg'] = data_2021[defender_positions].mean(axis=1)
 data_2021['Goalkeeper'] = data_2021[goalkeeper_position]  # Directly assigning as there's only one column for goalkeepers
 
-
-
 data_2022['Striker_Avg'] = data_2022[striker_positions].mean(axis=1)
 data_2022['Midfielder_Avg'] = data_2021[midfielder_positions].mean(axis=1)
 data_2021['Defender_Avg'] = data_2022[defender_positions].mean(axis=1)
@@ -101,12 +90,11 @@ data_2022 = data_2022.drop(striker_positions + midfielder_positions + defender_p
 
 data_2021.dtypes
 
-import numpy as np
 
+import numpy as np
 # 2021 categorical and numeric data
 categorical_features_2021 = data_2021.select_dtypes(exclude=[np.number])
 numeric_features_2021 = data_2021.select_dtypes(include=[np.number])
-
 
 # 2022 categorical and numeric data
 categorical_features_2022 = data_2022.select_dtypes(exclude=[np.number])
@@ -341,5 +329,3 @@ import pickle
 # Save to file
 with open("fifa_ml.pkl", "wb") as content:
     pickle.dump(model_data, content)
-
-# !pip install --upgrade scikit-learn
